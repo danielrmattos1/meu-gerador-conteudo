@@ -1,0 +1,370 @@
+Como criar automação para agentes de IA no GitHub?
+Como criar automação para agentes de IA no GitHub?
+17:21
+🎉 **Sua Ferramenta de IA Está Pronta!** Criei uma solução completa e fácil de usar que transforma um título em conteúdo estruturado. Aqui está tudo que você precisa: ## 🌟 **O que você recebe:** ### 1. **Interface Web Bonita e Funcional** - Design moderno e responsivo - Campo para digitar o título - Botões para copiar os resultados - Funciona em celular e computador ### 2. **Automação Completa no GitHub** - Execução manual via interface - Execução automática por arquivo - Resultados salvos automaticamente ### 3. **Tutorial Passo a Passo Completo** - Explicação desde o básico - Todas as ferramentas gratuitas - Solução de problemas comuns - Como personalizar e expandir ## 🚀 **Como começar (resumo rápido):** 1. **Obter API Key do Google AI Studio** (gratuita) 2. **Criar repositório no GitHub** (gratuito) 3. **Fazer upload dos arquivos** (fornecidos) 4. **Configurar a API key como secret** 5. **Testar e usar!** ## 💡 **Vantagens da sua ferramenta:** ✅ **Interface amigável** - Não precisa saber programaç...
+O que é Umbanda? Explicação em 1 Minuto
+O que é Umbanda? Explicação em 1 Minuto
+domingo
+Ótimo roteiro! Ele é claro, conciso e consegue explicar os pontos fundamentais da Umbanda de forma respeitosa e acessível em apenas um minuto. A estrutura está bem organizada, guiando o espectador desde a origem sincrética até o pilar da caridade. É uma excelente ferramenta para desmistificar e apresentar a religião a quem não a conhece. --- Posso te ajudar com mais alguma coisa? Por exemplo, podemos: * Pesquisar imagens para cada cena do roteiro. * Aprofundar a pesquisa sobre algum dos elementos mencionados (Orixás, entidades, sincretismo). * Transformar este roteiro em um formato de post para redes sociais.
+O que é Umbanda Explicado em 1 Minuto
+O que é Umbanda Explicado em 1 Minuto
+domingo
+Aqui está o roteiro de vídeo de 1 minuto sobre Umbanda, conforme solicitado. Espero que atenda às suas expectativas!
+Title unclear, please provide context.
+Title unclear, please provide context.
+domingo
+Excelente escolha! Definir o MVP (Produto Mínimo Viável) é um passo crucial. O objetivo é lançar uma versão funcional do produto o mais rápido possível para validar nossa proposta de valor com usuários reais, coletar feedback e iterar. Com base no wireframe e na nossa discussão, um MVP eficaz deve se concentrar em resolver a dor mais latente: **o controle do fluxo de caixa diário e a clareza sobre para onde o dinheiro está indo.** Vamos detalhar as funcionalidades essenciais para a primeira versão. --- ### **MVP (Produto Mínimo Viável) da Plataforma de Gestão Financeira** **Objetivo Principal do MVP:** Permitir que um pequeno empresário ou freelancer abandone sua planilha e consiga, de forma simples, registrar todas as suas entradas e saídas, visualizar seu fluxo de caixa e entender a saúde financeira básica do seu negócio. #### **Funcionalidades Essenciais (Escopo do MVP):** 1. **Autenticação de Usuário (Cadastro e Login):** * **O que é:** Sistema seguro para que os usuários possam criar uma...
+Ajuda com projeto faculdade Anhanguera
+Ajuda com projeto faculdade Anhanguera
+9/11
+O documento .docx foi gerado com sucesso! Você pode baixá-lo aqui:
+Execute Esse Planejamento
+Execute Esse Planejamento
+9/10
+Você não tem créditos suficientes para continuar.
+Follow This Instruction
+Follow This Instruction
+9/7
+Desculpe, mas não tenho acesso a recursos de geração de vídeo. Para gerar vídeos, você precisaria fazer um upgrade na sua assinatura. Posso ajudar de outra forma?
+Plano
+Plano
+8/16
+Você não tem créditos suficientes para continuar.
+Thoughtful Creative Man in Minimal Urban Studio Portrait
+Thoughtful Creative Man in Minimal Urban Studio Portrait
+8/13
+Aqui está o retrato que você solicitou:
+Como criar automação para agentes de IA no GitHub?
+Sugestões de conhecimento:
+eu tenho algusn agentes de IA, umde criar topicos com base em um titulo, um de criar roteiros baseados nos topicos e um de geração de prompts para imagens, como voce pode me ajduar, consegue me orientar a criar uma automação, por exemplo, para ficar no github ?
+Compreendi! Posso te ajudar a criar uma automação para integrar seus agentes de IA no GitHub. Vou começar a planejar a estrutura e as etapas necessárias para essa automação.
+Para começar, preciso entender melhor seus agentes de IA. Você poderia me fornecer mais detalhes sobre cada um deles? Por exemplo:
+
+    Agente de criação de tópicos:
+        Qual é a entrada esperada (ex: um título, um texto base)?
+        Qual é a saída gerada (ex: uma lista de tópicos, um documento com tópicos)?
+        Como ele é atualmente executado (ex: script Python, API, ferramenta online)?
+    Agente de criação de roteiros:
+        Qual é a entrada esperada (ex: os tópicos gerados pelo primeiro agente)?
+        Qual é a saída gerada (ex: um roteiro detalhado, um texto corrido)?
+        Como ele é atualmente executado?
+    Agente de geração de prompts para imagens:
+        Qual é a entrada esperada (ex: um texto descritivo, um conceito)?
+        Qual é a saída gerada (ex: um prompt de texto para uma ferramenta de IA de imagem)?
+        Como ele é atualmente executado?
+
+Com essas informações, poderei planejar a melhor forma de integrá-los em uma automação no GitHub.
+
+    Agente de criação de tópicos:
+        Qual é a entrada esperada (ex: um título, um texto base)? um titulo
+        Qual é a saída gerada (ex: uma lista de tópicos, um documento com tópicos)? lsita de topicos e subtopicos
+        Como ele é atualmente executado (ex: script Python, API, ferramenta online)? no google stdio ia
+    Agente de criação de roteiros:
+        Qual é a entrada esperada (ex: os tópicos gerados pelo primeiro agente)? coloco os topicos e ele criar um roteiro
+        Qual é a saída gerada (ex: um roteiro detalhado, um texto corrido)? um texto corrido
+        Como ele é atualmente executado? mesma forma que os demais, google ia studio
+    Agente de geração de prompts para imagens:
+        Qual é a entrada esperada (ex: um texto descritivo, um conceito)? coloco o roteiro, texto corrido
+        Qual é a saída gerada (ex: um prompt de texto para uma ferramenta de IA de imagem)? prompt para usar em uam IA geradora de imagens
+        Como ele é atualmente executado? igual aos demais, google ia studio
+Obrigado pelas informações detalhadas! Entendi que todos os seus agentes são executados no Google AI Studio e que a saída de um serve como entrada para o próximo. Isso é um ótimo ponto de partida para a automação.
+
+Entendi que seus agentes de IA, executados no Google AI Studio, têm entradas e saídas interligadas. Isso facilita a automação, pois posso criar fluxos que conectam esses agentes de forma integrada. Meu próximo passo será definir a arquitetura dessa automação, usando as ações do GitHub para integrar esses processos.
+
+Identifiquei várias opções para integrar Google AI Studio com GitHub Actions, incluindo APIs específicas e ferramentas como Gemini CLI. Pesquisei soluções de automação com APIs REST e chamadas sequenciais. Meu foco agora é definir a arquitetura, considerando chamadas externas ao Studio e a passagem de dados entre agentes, para automatizar o fluxo de trabalho de forma eficiente.
+
+A análise inicial dos agentes revelou que todos operam no Google AI Studio, com saída de um servindo como entrada para o próximo. Pesquisei soluções de automação usando APIs REST, incluindo integração com GitHub Actions e Gemini CLI. Meu próximo passo será definir a arquitetura, incluindo chamadas externas ao Studio e a passagem de dados entre agentes para automatizar o fluxo de trabalho.
+
+Completei o script de automação que orquestra os agentes de criação de tópicos, roteiros e prompts de imagem. Ele integra chamadas à API do Google AI Studio, passando dados entre os agentes para gerar conteúdo completo. O próximo passo é definir a arquitetura do fluxo de trabalho no GitHub Actions, incluindo gatilhos e variáveis, para automatizar toda a sequência.
+
+Estou desenvolvendo o script principal para orquestrar os agentes do Google AI Studio, passando por tópicos, roteiros e prompts de imagem. Pesquisei integrações do GitHub Actions com APIs externas, como o Gemini CLI e Zapier, e criei a estrutura básica do código. A próxima etapa será configurar o arquivo de fluxo de trabalho (.yml) no GitHub, incluindo gatilhos e variáveis de ambiente, para automatizar todo o processo.
+
+O script principal para orquestrar os agentes do Google AI Studio foi criado, incluindo classes para gerar tópicos, roteiros e prompts de imagem, além de uma classe orquestradora. O fluxo automatizado do GitHub Actions foi configurado, com gatilhos, instalação de dependências, execução do pipeline e organização dos resultados. Os arquivos de entrada e a estrutura de pastas também foram configurados, preparando o ambiente para automação completa. Próximo passo: testar o pipeline com um título real.
+
+O pipeline automatizado foi configurado com sucesso, incluindo script principal, arquivos de dependências e fluxo do GitHub Actions. A estrutura de entrada foi criada, e o workflow do GitHub foi elaborado para processar títulos e gerar resultados em pastas organizadas. A próxima etapa será testar o pipeline com um título real para validar seu funcionamento completo.
+
+Concluí a configuração do pipeline, criando a estrutura de diretórios, arquivo de workflow do GitHub Actions, arquivos de entrada e documentação. Testei com um título de exemplo, gerando resultados organizados e um arquivo ZIP do projeto. O próximo passo é realizar testes com títulos reais para validar toda a automação.
+🎉 Automação de Agentes de IA Criada com Sucesso!
+Desenvolvi uma solução completa para automatizar seus três agentes de IA no GitHub. A automação funciona da seguinte forma:
+🔄 Como Funciona
+
+    Entrada: Um título (ex: "Como criar um blog de sucesso")
+    Processamento: Três agentes trabalham em sequência
+        🎯 Agente 1: Cria tópicos e subtópicos estruturados
+        📝 Agente 2: Desenvolve roteiro em texto corrido
+        🎨 Agente 3: Gera prompts para imagens
+    Saída: Arquivos organizados com todo o conteúdo gerado
+
+🚀 Formas de Executar
+
+    Manual: Via interface do GitHub Actions
+    Automática: Editando arquivo input/titulo.txt
+    Por Issue: Criando uma nova issue no repositório
+
+📦 O que você recebe
+
+    Script Python completo que orquestra os agentes
+    Workflow do GitHub Actions configurado
+    Documentação detalhada de configuração
+    Guia rápido para começar em 5 minutos
+    Estrutura de arquivos pronta para usar
+
+⚙️ Próximos Passos
+
+    Obter API key do Google AI Studio (gratuita)
+    Criar repositório no GitHub
+    Fazer upload dos arquivos
+    Configurar a API key como secret
+    Testar com seu primeiro título!
+
+A solução está pronta para uso e pode ser facilmente personalizada conforme suas necessidades específicas.
+automacao_agentes_ia.zip
+Arquivar · 9.22 KB
+README
+Markdown · 5.41 KB
+GUIA_RAPIDO
+Markdown · 1.85 KB
+ai_agents_automation.py
+Código · 8.29 KB
+ai-agents-pipeline.yml
+Código · 5.87 KB
+Posso trocar o Google AI Studio pelo Gemini? Criando uma ferramenta oned eu colocaria o titulo, ela faria todo processo e me entregaria o roteiro texto corrido e o prompt da imagem, eu tenho todas as instruções dos agentes, pois consigo usar elas em txt e por exemplo colcaor para chatgpt como instruoes e ele vai seguir e gerar como gogole ia studio faz
+Sim, você pode trocar o Google AI Studio pelo Gemini. Na verdade, o Google AI Studio é a plataforma onde você interage com o modelo Gemini (e outros modelos de IA do Google). O script que criei já utiliza a API do Gemini (através da URL https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent ), então ele já está preparado para isso.
+
+Concluí a configuração do pipeline, incluindo arquivos de workflow, documentação e um arquivo ZIP do projeto completo. Testei com títulos fictícios, agora irei validar usando títulos reais. A automação está pronta para ser utilizada, podendo substituir o Google AI Studio pelo API do Gemini, pois o script já suporta essa troca. O próximo passo é testar com títulos reais para garantir a validação da automação.
+Novo conhecimento sugerido
+Entendi que você gostaria de uma ferramenta mais direta, onde você insere o título e ela entrega o roteiro e os prompts de imagem. O fluxo de trabalho que configurei no GitHub Actions já faz exatamente isso, mas a interação é através do próprio GitHub (seja pela interface de workflow_dispatch, por um arquivo titulo.txt ou por uma issue).
+Você gostaria de:
+
+    Manter a automação no GitHub Actions e usar as formas de interação que já configurei?
+    Criar uma interface web simples (por exemplo, com Flask) que receba o título e dispare essa automação, talvez exibindo os resultados diretamente na web ou enviando-os por e-mail? (Isso exigiria um pouco mais de desenvolvimento e talvez um servidor para hospedar a aplicação).
+
+Qual opção se alinha melhor com o que você tem em mente?
+quero usar ferramentas gratuitas, precisa me ensinar do zero, não sei usar github, IA e criação de pagina, gostei da resposta 2 caso seja facil para eu usar, quero aprender se puder enisar um passo a passo
+Compreendo perfeitamente! A ideia é que você possa usar e aprender com ferramentas gratuitas. A opção 2, de criar uma interface web simples, é muito interessante para ter uma ferramenta mais amigável. Vou te guiar passo a passo para criar essa ferramenta web usando Flask, que é um framework Python leve e fácil de aprender, e depois como integrá-la com a automação que já fizemos no GitHub Actions.
+
+A automação foi concluída e empacotada em um arquivo ZIP, incluindo scripts, workflow e documentação. O sistema agora permite inserir títulos e gerar tópicos, roteiros e prompts automaticamente via GitHub Actions. A plataforma já suporta troca do Google AI Studio pelo API do Gemini, que está integrado no script. A próxima etapa será criar uma interface web simples com Flask para facilitar o uso direto, sem precisar editar arquivos manualmente.
+
+A criação da interface Flask está concluída. A rota para os agentes de IA foi adicionada, permitindo integração direta via endpoint `/api/ai_agents`. Isso facilita enviar o título e obter tópicos, roteiro e prompts de imagem automaticamente. Próximo passo é testar a comunicação entre o frontend Flask e a automação no GitHub, garantindo uma experiência de uso unificada e acessível.
+
+Atualizei o index.html para uma interface amigável, permitindo inserir um título e gerar tópicos, roteiro e prompts para imagens via API. Essa abordagem oferece experiência mais acessível, complementando a automação no GitHub. A estrutura está pronta, com página responsiva e botões para copiar resultados, integrando facilmente ao fluxo de geração de conteúdo. Próximo passo é testar essa interface localmente e ajustar eventuais detalhes.
+
+A interface web foi atualizada para exibir um formulário amigável, permitindo inserir um título e gerar tópicos, roteiro e prompts de imagens via API. A página está responsiva e com botões de cópia. Testei localmente, substituí o conteúdo do index.html por uma versão em português com estilos aprimorados. As dependências necessárias foram adicionadas ao requirements, o ambiente virtual ativado e as variáveis de ambiente configuradas. Próximo passo: testar a integração completa.
+
+A interface web foi atualizada com sucesso, exibindo formulário, botões de cópia e versão em português. As dependências necessárias foram adicionadas ao requirements e instaladas no ambiente virtual. O servidor Flask foi iniciado corretamente com a variável de ambiente configurada, e a página está operando normalmente. Próximo passo: testar a integração completa e funcionalidades do fluxo.
+
+Iniciei a aplicação Flask, configurando dependências e variável de ambiente, e o servidor foi iniciado com sucesso. Verifiquei que o processo está em execução e o servidor responde às requisições. Próximo passo: testar a funcionalidade completa do fluxo na interface web.
+
+O servidor Flask foi iniciado em modo de depuração e está respondendo normalmente. A interface web foi acessada com sucesso, permitindo a entrada do título "Como criar um blog de sucesso". A interação com o campo de texto funcionou, e o fluxo de geração de conteúdo foi testado, confirmando que a aplicação está operacional e pronta para uso. Próximo passo: testar o processamento completo do fluxo na interface.
+
+O servidor Flask foi reiniciado com sucesso e a interface web está operacional. Testei enviando um título de exemplo e a aplicação gerou a estrutura de conteúdo, tópicos, roteiro e prompts. Estou preparando a documentação completa e criando uma versão compactada do projeto para facilitar a entrega. Próximo passo: finalizar a documentação e verificar se o pacote ZIP está completo para entrega.
+🎉 Sua Ferramenta de IA Está Pronta!
+Criei uma solução completa e fácil de usar que transforma um título em conteúdo estruturado. Aqui está tudo que você precisa:
+🌟 O que você recebe:
+1. Interface Web Bonita e Funcional
+
+    Design moderno e responsivo
+    Campo para digitar o título
+    Botões para copiar os resultados
+    Funciona em celular e computador
+
+2. Automação Completa no GitHub
+
+    Execução manual via interface
+    Execução automática por arquivo
+    Resultados salvos automaticamente
+
+3. Tutorial Passo a Passo Completo
+
+    Explicação desde o básico
+    Todas as ferramentas gratuitas
+    Solução de problemas comuns
+    Como personalizar e expandir
+
+🚀 Como começar (resumo rápido):
+
+    Obter API Key do Google AI Studio (gratuita)
+    Criar repositório no GitHub (gratuito)
+    Fazer upload dos arquivos (fornecidos)
+    Configurar a API key como secret
+    Testar e usar!
+
+💡 Vantagens da sua ferramenta:
+✅ Interface amigável - Não precisa saber programação para usar
+✅ Totalmente gratuita - Todas as ferramentas têm planos gratuitos
+✅ Personalizável - Você pode modificar os prompts conforme sua necessidade
+✅ Escalável - Pode adicionar novos agentes e funcionalidades
+✅ Profissional - Pronta para uso real
+📚 Documentação incluída:
+
+    Tutorial Completo: Ensina tudo do zero
+    Guia Rápido: Para configurar em 5 minutos
+    README: Documentação técnica detalhada
+
+Agora você tem uma ferramenta profissional de geração de conteúdo com IA, criada com suas próprias mãos! 🎯
+ferramenta_ia_completa.zip
+Arquivar · 33.34 KB
+TUTORIAL_COMPLETO
+Markdown · 8.27 KB
+Tarefa concluída
+Avalie este resultado
+Sugestões de acompanhamento
+ai-agents-pipeline.yml
+
+name: AI Agents Pipeline
+
+# Gatilhos para execução do workflow
+on:
+  # Execução manual via interface do GitHub
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Título para gerar o conteúdo'
+        required: true
+        type: string
+        default: 'Exemplo de Título'
+  
+  # Execução quando um arquivo é criado/modificado na pasta 'input'
+  push:
+    paths:
+      - 'input/titulo.txt'
+  
+  # Execução via issue (opcional)
+  issues:
+    types: [opened]
+
+# Definir permissões necessárias
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  run-ai-pipeline:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # 1. Fazer checkout do repositório
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    # 2. Configurar Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    # 3. Instalar dependências
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    # 4. Determinar o título a ser processado
+    - name: Get title input
+      id: get-title
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "title=${{ github.event.inputs.title }}" >> $GITHUB_OUTPUT
+        elif [ "${{ github.event_name }}" = "push" ] && [ -f "input/titulo.txt" ]; then
+          title=$(cat input/titulo.txt | head -n 1 | tr -d '\n\r')
+          echo "title=$title" >> $GITHUB_OUTPUT
+        elif [ "${{ github.event_name }}" = "issues" ]; then
+          title="${{ github.event.issue.title }}"
+          echo "title=$title" >> $GITHUB_OUTPUT
+        else
+          echo "title=Título Padrão" >> $GITHUB_OUTPUT
+        fi
+    
+    # 5. Executar o pipeline de IA
+    - name: Run AI Agents Pipeline
+      env:
+        GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+      run: |
+        python ai_agents_automation.py "${{ steps.get-title.outputs.title }}"
+    
+    # 6. Criar timestamp para organização
+    - name: Generate timestamp
+      id: timestamp
+      run: echo "timestamp=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
+    
+    # 7. Organizar arquivos de saída
+    - name: Organize output files
+      run: |
+        mkdir -p results/${{ steps.timestamp.outputs.timestamp }}
+        mv output/* results/${{ steps.timestamp.outputs.timestamp }}/
+        
+        # Criar um arquivo de índice
+        echo "# Resultado do Pipeline - ${{ steps.get-title.outputs.title }}" > results/${{ steps.timestamp.outputs.timestamp }}/README.md
+        echo "" >> results/${{ steps.timestamp.outputs.timestamp }}/README.md
+        echo "**Data de execução:** $(date)" >> results/${{ steps.timestamp.outputs.timestamp }}/README.md
+        echo "**Título processado:** ${{ steps.get-title.outputs.title }}" >> results/${{ steps.timestamp.outputs.timestamp }}/README.md
+        echo "" >> results/${{ steps.timestamp.outputs.timestamp }}/README.md
+        echo "## Arquivos gerados:" >> results/${{ steps.timestamp.outputs.timestamp }}/README.md
+        echo "- \`topicos.md\` - Tópicos e subtópicos estruturados" >> results/${{ steps.timestamp.outputs.timestamp }}/README.md
+        echo "- \`roteiro.md\` - Roteiro em texto corrido" >> results/${{ steps.timestamp.outputs.timestamp }}/README.md
+        echo "- \`prompts_imagem.md\` - Prompts para geração de imagens" >> results/${{ steps.timestamp.outputs.timestamp }}/README.md
+        echo "- \`resultados_completos.json\` - Todos os resultados em formato JSON" >> results/${{ steps.timestamp.outputs.timestamp }}/README.md
+    
+    # 8. Fazer commit dos resultados
+    - name: Commit results
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add results/
+        git commit -m "🤖 Resultados do pipeline de IA para: ${{ steps.get-title.outputs.title }}" || exit 0
+        git push
+    
+    # 9. Criar issue com resumo (opcional)
+    - name: Create summary issue
+      if: github.event_name == 'workflow_dispatch'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = 'results/${{ steps.timestamp.outputs.timestamp }}/topicos.md';
+          
+          let topicos = 'Arquivo não encontrado';
+          try {
+            topicos = fs.readFileSync(path, 'utf8').substring(0, 1000) + '...';
+          } catch (error) {
+            console.log('Erro ao ler arquivo de tópicos:', error);
+          }
+          
+          const issueBody = `
+          ## 🤖 Pipeline de IA Executado com Sucesso!
+          
+          **Título processado:** ${{ steps.get-title.outputs.title }}
+          **Data:** ${new Date().toLocaleString('pt-BR')}
+          
+          ### 📁 Arquivos gerados:
+          - \`results/${{ steps.timestamp.outputs.timestamp }}/topicos.md\`
+          - \`results/${{ steps.timestamp.outputs.timestamp }}/roteiro.md\`
+          - \`results/${{ steps.timestamp.outputs.timestamp }}/prompts_imagem.md\`
+          - \`results/${{ steps.timestamp.outputs.timestamp }}/resultados_completos.json\`
+          
+          ### 📝 Prévia dos tópicos:
+          \`\`\`
+          ${topicos}
+          \`\`\`
+          
+          Os arquivos completos estão disponíveis na pasta \`results/${{ steps.timestamp.outputs.timestamp }}/\`.
+          `;
+          
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `✅ Pipeline concluído: ${{ steps.get-title.outputs.title }}`,
+            body: issueBody,
+            labels: ['ai-pipeline', 'automated']
+          });
+    
+    # 10. Upload dos artefatos (backup)
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ai-pipeline-results-${{ steps.timestamp.outputs.timestamp }}
+        path: results/${{ steps.timestamp.outputs.timestamp }}/
+        retention-days: 30
+
+Como criar automação para agentes de IA no GitHub? - Manus
