@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Conteúdo com IA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1.1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-weight: 600;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .result-section {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .result-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+        }
+
+        .result-section h3::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: #4facfe;
+        }
+
+        .result-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e1e5e9;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 1em;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: background-color 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #c3e6cb;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .generate-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Gerador de Conteúdo com IA</h1>
+            <p>Transforme um título em conteúdo completo: tópicos, roteiro e prompts para imagens</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="title">Digite o título do seu conteúdo:</label>
+                    <input type="text" id="title" placeholder="Ex: Como criar um canal no YouTube de sucesso" maxlength="200">
+                </div>
+                <button class="generate-btn" onclick="generateContent()">
+                    🚀 Gerar Conteúdo
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Gerando seu conteúdo... Isso pode levar alguns segundos.</p>
+            </div>
+
+            <div class="results" id="results">
+                <div class="result-section">
+                    <h3>📝 Tópicos e Subtópicos</h3>
+                    <div class="result-content" id="topics-content"></div>
+                    <button class="copy-btn" onclick="copyToClipboard('topics-content')">📋 Copiar</button>
+                </div>
+
+                <div class="result-section">
+                    <h3>🎬 Roteiro (Texto Corrido)</h3>
+                    <div class="result-content" id="script-content"></div>
+                    <button class="copy-btn" onclick="copyToClipboard('script-content')">📋 Copiar</button>
+                </div>
+
+                <div class="result-section">
+                    <h3>🎨 Prompts para Imagens</h3>
+                    <div class="result-content" id="prompts-content"></div>
+                    <button class="copy-btn" onclick="copyToClipboard('prompts-content')">📋 Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function generateContent() {
+            const titleInput = document.getElementById('title');
+            const title = titleInput.value.trim();
+            
+            if (!title) {
+                showMessage('Por favor, digite um título.', 'error');
+                return;
+            }
+
+            // Mostrar loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.querySelector('.generate-btn').disabled = true;
+            
+            // Limpar mensagens anteriores
+            clearMessages();
+
+            try {
+                const response = await fetch('/api/ai/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title: title })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Mostrar resultados
+                    document.getElementById('topics-content').textContent = data.data.topics;
+                    document.getElementById('script-content').textContent = data.data.script;
+                    document.getElementById('prompts-content').textContent = data.data.image_prompts;
+                    
+                    document.getElementById('results').style.display = 'block';
+                    showMessage('Conteúdo gerado com sucesso! 🎉', 'success');
+                } else {
+                    showMessage(`Erro: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showMessage(`Erro de conexão: ${error.message}`, 'error');
+            } finally {
+                // Esconder loading
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('.generate-btn').disabled = false;
+            }
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showMessage('Texto copiado para a área de transferência! 📋', 'success');
+            }).catch(() => {
+                // Fallback para navegadores mais antigos
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showMessage('Texto copiado para a área de transferência! 📋', 'success');
+            });
+        }
+
+        function showMessage(message, type) {
+            clearMessages();
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type;
+            messageDiv.textContent = message;
+            
+            const mainContent = document.querySelector('.main-content');
+            mainContent.insertBefore(messageDiv, mainContent.firstChild);
+            
+            // Remover mensagem após 5 segundos
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+
+        function clearMessages() {
+            const messages = document.querySelectorAll('.error, .success');
+            messages.forEach(msg => {
+                if (msg.parentNode) {
+                    msg.parentNode.removeChild(msg);
+                }
+            });
+        }
+
+        // Permitir envio com Enter
+        document.getElementById('title').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateContent();
+            }
+        });
+
+        // Verificar status da API ao carregar a página
+        window.addEventListener('load', async function() {
+            try {
+                const response = await fetch('/api/ai/health');
+                const data = await response.json();
+                
+                if (!data.api_configured) {
+                    showMessage('⚠️ API do Google AI não configurada. Verifique as variáveis de ambiente.', 'error');
+                }
+            } catch (error) {
+                showMessage('⚠️ Erro ao verificar configuração da API.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
