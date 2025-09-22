@@ -91,8 +91,9 @@ class ImagePromptAgent(BaseAgent):
         # Usamos apenas os primeiros 2500 caracteres do roteiro para economizar tokens e focar na essência
         script_snippet = script[:2500]
         
+        # AJUSTE: Modificado para gerar apenas 1 prompt de imagem
         prompt = f"""
-        **MISSÃO:** Você é um especialista em engenharia de prompts para Midjourney. Sua tarefa é ler o trecho do roteiro de vídeo fornecido e criar 5 prompts visuais impactantes que capturem a essência de suas mensagens.
+        **MISSÃO:** Você é um especialista em engenharia de prompts para Midjourney. Sua tarefa é ler o trecho do roteiro de vídeo fornecido e criar 1 (um) único prompt visual, o mais poderoso e simbolicamente denso possível, que capture a essência da mensagem principal.
 
         **TRECHO DO ROTEIRO PARA ANÁLISE:**
         {script_snippet}
@@ -105,12 +106,10 @@ class ImagePromptAgent(BaseAgent):
         - **Animação Sutil:** Inclua elementos com movimento lento, como "fumaça de incenso subindo lentamente" ou "chama da vela tremulando suavemente".
 
         **REGRAS:**
-        - Não use silhuetas humanas em todas as imagens. Alterne com objetos simbólicos.
-        - Varie a composição e os elementos centrais.
-        - Os prompts devem ser em inglês, detalhados e prontos para o Midjourney, no formato:
+        - O prompt deve ser em inglês, detalhado e pronto para o Midjourney, no formato:
         `/imagine prompt: [descrição detalhada], [estilo], [parâmetros como --ar 16:9]`
 
-        Crie 5 prompts distintos baseados no roteiro.
+        Crie 1 (um) único prompt baseado no roteiro.
         """
         return self.call_gemini(prompt)
 
