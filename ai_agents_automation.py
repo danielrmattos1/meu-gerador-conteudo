@@ -1,234 +1,155 @@
-#!/usr/bin/env python3
-"""
-Script para automatizar o fluxo de trabalho dos agentes de IA:
-1. Agente de criação de tópicos (título -> tópicos e subtópicos)
-2. Agente de criação de roteiros (tópicos -> roteiro em texto corrido)
-3. Agente de geração de prompts para imagens (roteiro -> prompts para IA de imagens)
-"""
-
 import os
 import sys
-import json
-import time
-import requests
-from typing import Dict, Any, Optional
+import google.generativeai as genai
 
-class GoogleAIStudioAgent:
-    """Classe base para interagir com agentes do Google AI Studio"""
-    
-    def __init__(self, api_key: str):
-        self.api_key = api_key
-        self.base_url = "https://generativelanguage.googleapis.com/v1beta/models"
-        self.headers = {
-            "Content-Type": "application/json"
-        }
-    
-    def call_gemini(self, prompt: str, model: str = "gemini-1.5-flash") -> str:
-        """Faz uma chamada para a API do Gemini"""
-        url = f"{self.base_url}/{model}:generateContent"
-        
-        payload = {
-            "contents": [{
-                "parts": [{
-                    "text": prompt
-                }]
-            }]
-        }
-        
-        params = {"key": self.api_key}
-        
+# --- CONFIGURAÇÃO DA API ---
+# A automação do GitHub irá fornecer a chave de API como uma variável de ambiente.
+api_key = os.getenv('GOOGLE_AI_API_KEY')
+if not api_key:
+    # Este erro irá parar a execução do GitHub Actions se o 'secret' não for encontrado.
+    sys.exit("ERRO: API Key do Google não encontrada. Configure o secret GOOGLE_AI_API_KEY.")
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+# --- DEFINIÇÃO DOS AGENTES ESPECIALISTAS (CÉREBRO DA IA) ---
+
+class BaseAgent:
+    def __init__(self, model):
+        self.model = model
+
+    def process(self, data):
+        raise NotImplementedError("O método process() deve ser implementado pela subclasse.")
+
+    def call_gemini(self, prompt):
         try:
-            response = requests.post(url, json=payload, params=params, headers=self.headers)
-            response.raise_for_status()
-            
-            result = response.json()
-            if "candidates" in result and len(result["candidates"]) > 0:
-                return result["candidates"][0]["content"]["parts"][0]["text"]
-            else:
-                raise Exception("Resposta inválida da API")
-                
-        except requests.exceptions.RequestException as e:
-            raise Exception(f"Erro na chamada da API: {e}")
+            response = self.model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            print(f"Erro ao chamar a API Gemini: {e}")
+            # Retorna o erro para que ele apareça nos logs do GitHub Actions
+            return f"Erro ao gerar conteúdo: {e}"
 
-class TopicCreatorAgent(GoogleAIStudioAgent):
-    """Agente para criar tópicos e subtópicos a partir de um título"""
-    
-    def create_topics(self, title: str) -> str:
-        """Cria tópicos e subtópicos baseados no título fornecido"""
+class TopicsAgent(BaseAgent):
+    """
+    Agente especialista em criar tópicos profundos e filosóficos
+    baseado nas suas instruções.
+    """
+    def process(self, title):
         prompt = f"""
-        Com base no título "{title}", crie uma lista estruturada de tópicos e subtópicos para um conteúdo completo e abrangente.
-        
-        Formato de saída:
-        - Tópico Principal 1
-          - Subtópico 1.1
-          - Subtópico 1.2
-        - Tópico Principal 2
-          - Subtópico 2.1
-          - Subtópico 2.2
-        
-        Seja específico e organize os tópicos de forma lógica e sequencial.
+        **MISSÃO:** Você é um especialista na criação de tópicos transformadores para vídeos do YouTube sobre Umbanda e Espiritualidade Crítica. Sua tarefa é transformar o tema '{title}' em uma lista de tópicos e subtópicos com profundidade filosófica, ética e simbólica, oferecendo clareza prática e evitando clichês.
+
+        **ESTILO:** A linguagem deve ser acolhedora, reflexiva e potente, unindo o fundamento da Umbanda com autonomia pessoal e psicologia.
+
+        **ESTRUTURA OBRIGATÓRIA PARA CADA TEMA:**
+        - **Título do tema:** Uma frase magnetizante que mistura curiosidade, filosofia e impacto ético.
+        - **Subtópico 1:** Uma crença limitante ou um dogma a ser desmantelado.
+        - **Subtópico 2:** Um conceito pouco conhecido ou distorcido (ex: Teoria, Efeito Comportamental).
+        - **Subtópico 3:** Uma revelação contraintuitiva que transfere o poder para o médium.
+        - **Subtópico 4:** Uma consequência prática (o erro comportamental) ou a revelação de um relato real.
+        - **Subtópico 5:** Uma metáfora simbólica ou um chamado ao estudo (livros).
+
+        Gere os tópicos para o tema: '{title}'.
         """
-        
         return self.call_gemini(prompt)
 
-class ScriptWriterAgent(GoogleAIStudioAgent):
-    """Agente para criar roteiros baseados em tópicos"""
-    
-    def create_script(self, topics: str) -> str:
-        """Cria um roteiro em texto corrido baseado nos tópicos fornecidos"""
+class ScriptAgent(BaseAgent):
+    """
+    Agente especialista em criar roteiros no estilo "Professor Reflexivo"
+    baseado nas suas instruções.
+    """
+    def process(self, topics):
         prompt = f"""
-        Com base nos seguintes tópicos e subtópicos:
-        
+        **MISSÃO:** Você é um roteirista para um canal Dark de YouTube sobre Umbanda e Espiritualidade Crítica. Sua tarefa é escrever um roteiro de 15-20 minutos, em texto corrido para narração, baseado nos seguintes tópicos. O objetivo é monetizar com afiliação de livros da Amazon.
+
+        **TÓPICOS A SEREM DESENVOLVIDOS:**
         {topics}
+
+        **ESTILO E TOM OBRIGATÓRIOS:**
+        - **Tom de Professor Reflexivo:** Calmo, pausado, introspectivo e filosófico.
+        - **Linguagem:** Evite clichês e valide a dor do espectador antes de oferecer a cura.
+        - **Ênfase:** Na autonomia da consciência, não em rituais complexos.
+        - **VETO TOTAL (BLACKLIST):** Nunca use termos como "Vibe", "Vibrar Alto", "Você Consegue", "Pense Positivo". A linguagem é de Mestre Filosófico, não de Coach Motivacional.
+
+        **ESTRUTURA DO ROTEIRO:**
+        1. **Abertura Filosófica:** Comece com uma pergunta profunda que desafie um dogma.
+        2. **Desenvolvimento:** Explique os tópicos fornecidos, conectando a prática com a filosofia da autonomia. Integre sutilmente referências a estudos ou teorias.
+        3. **Conclusão e CTA de Monetização:** Encerre de forma inspiradora e use a frase exata: "Se o seu poder está na sua consciência, o seu próximo passo está na sua lista de estudos. Encontre o Livro Essencial de Umbanda e todas as referências para sua jornada na descrição."
         
-        Crie um roteiro detalhado em texto corrido. O roteiro deve:
-        - Ser fluido e natural
-        - Cobrir todos os tópicos mencionados
-        - Ter uma introdução, desenvolvimento e conclusão
-        - Ser adequado para apresentação ou narração
-        - Ter aproximadamente 500-800 palavras
-        
-        Escreva o roteiro completo:
+        **AJUSTE FINAL E RESTRIÇÃO CRÍTICA:**
+        O resultado final deve ser um texto contínuo, limpo e sem interrupções. NÃO inclua absolutamente NENHUM tipo de formatação, como asteriscos para negrito (`**texto**`), hashtags para títulos (`# Título`), marcadores (`*`, `-`), ou qualquer outra sintaxe de markdown. O texto será inserido diretamente em um software de geração de áudio (Text-to-Speech) e qualquer formatação irá atrapalhar a narração. Entregue apenas o texto puro que será narrado.
+
+        Agora, escreva o roteiro completo.
         """
-        
         return self.call_gemini(prompt)
 
-class ImagePromptAgent(GoogleAIStudioAgent):
-    """Agente para gerar prompts de imagens baseados em roteiros"""
-    
-    def create_image_prompts(self, script: str) -> str:
-        """Cria prompts para geração de imagens baseados no roteiro"""
+class ImagePromptAgent(BaseAgent):
+    """
+    Agente especialista em criar prompts para Midjourney no estilo
+    "Neo-Ancestralismo Meditativo".
+    """
+    def process(self, script):
+        # Usamos apenas os primeiros 2500 caracteres do roteiro para economizar tokens e focar na essência
+        script_snippet = script[:2500]
+        
         prompt = f"""
-        Com base no seguinte roteiro:
-        
-        {script}
-        
-        Crie uma série de prompts detalhados para geração de imagens que complementem o conteúdo. 
-        
-        Para cada prompt, inclua:
-        - Descrição visual específica
-        - Estilo artístico sugerido
-        - Elementos visuais importantes
-        - Atmosfera/mood desejado
-        
-        Formato de saída:
-        PROMPT 1: [descrição detalhada]
-        PROMPT 2: [descrição detalhada]
-        PROMPT 3: [descrição detalhada]
-        
-        Crie entre 3-5 prompts que capturem os momentos ou conceitos mais importantes do roteiro.
+        **MISSÃO:** Você é um especialista em engenharia de prompts para Midjourney. Sua tarefa é ler o trecho do roteiro de vídeo fornecido e criar 1 (um) único prompt visual, o mais poderoso e simbolicamente denso possível, que capture a essência da mensagem principal.
+
+        **TRECHO DO ROTEIRO PARA ANÁLISE:**
+        {script_snippet}
+
+        **ESTILO VISUAL OBRIGATÓRIO: Neo-Ancestralismo Meditativo**
+        - **Estética:** Pintura a óleo escura e dramática, textura de gravura, arte digital com textura de tela (Painterly).
+        - **Temas:** Foco em metáforas visuais da autonomia e quebra de dogmas (ex: rochas rachadas com ouro kintsugi, chaves antigas, livros abertos na escuridão, raízes como nervos).
+        - **Cores:** Fundos escuros (Preto Carvão, Azul-Marinho) com destaques em Ouro Velho, Cobre ou luz branca pura. Alto contraste.
+        - **Composição:** Variada. Use close-ups, top view, silhuetas contemplativas em contraluz.
+        - **Animação Sutil:** Inclua elementos com movimento lento, como "fumaça de incenso subindo lentamente" ou "chama da vela tremulando suavemente".
+
+        **REGRAS:**
+        - O prompt deve ser em inglês, detalhado e pronto para o Midjourney, no formato:
+        `/imagine prompt: [descrição detalhada], [estilo], [parâmetros como --ar 16:9]`
+
+        Crie 1 (um) único prompt baseado no roteiro.
         """
-        
         return self.call_gemini(prompt)
 
-class AIAgentsOrchestrator:
-    """Orquestrador principal que coordena todos os agentes"""
-    
-    def __init__(self, api_key: str):
-        self.topic_agent = TopicCreatorAgent(api_key)
-        self.script_agent = ScriptWriterAgent(api_key)
-        self.image_agent = ImagePromptAgent(api_key)
-    
-    def run_full_pipeline(self, title: str) -> Dict[str, str]:
-        """Executa o pipeline completo: título -> tópicos -> roteiro -> prompts de imagem"""
-        
-        print(f"🚀 Iniciando pipeline para o título: '{title}'")
-        
-        # Etapa 1: Criar tópicos
-        print("📝 Etapa 1: Criando tópicos e subtópicos...")
-        topics = self.topic_agent.create_topics(title)
-        print("✅ Tópicos criados com sucesso!")
-        
-        # Etapa 2: Criar roteiro
-        print("🎬 Etapa 2: Criando roteiro...")
-        script = self.script_agent.create_script(topics)
-        print("✅ Roteiro criado com sucesso!")
-        
-        # Etapa 3: Criar prompts de imagem
-        print("🎨 Etapa 3: Criando prompts para imagens...")
-        image_prompts = self.image_agent.create_image_prompts(script)
-        print("✅ Prompts de imagem criados com sucesso!")
-        
-        return {
-            "title": title,
-            "topics": topics,
-            "script": script,
-            "image_prompts": image_prompts
-        }
-    
-    def save_results(self, results: Dict[str, str], output_dir: str = "output"):
-        """Salva os resultados em arquivos separados"""
-        
-        os.makedirs(output_dir, exist_ok=True)
-        
-        # Salvar cada resultado em um arquivo separado
-        files_created = []
-        
-        # Arquivo de tópicos
-        topics_file = os.path.join(output_dir, "topicos.md")
-        with open(topics_file, "w", encoding="utf-8") as f:
-            f.write(f"# Tópicos para: {results['title']}\n\n")
-            f.write(results['topics'])
-        files_created.append(topics_file)
-        
-        # Arquivo de roteiro
-        script_file = os.path.join(output_dir, "roteiro.md")
-        with open(script_file, "w", encoding="utf-8") as f:
-            f.write(f"# Roteiro para: {results['title']}\n\n")
-            f.write(results['script'])
-        files_created.append(script_file)
-        
-        # Arquivo de prompts de imagem
-        prompts_file = os.path.join(output_dir, "prompts_imagem.md")
-        with open(prompts_file, "w", encoding="utf-8") as f:
-            f.write(f"# Prompts de Imagem para: {results['title']}\n\n")
-            f.write(results['image_prompts'])
-        files_created.append(prompts_file)
-        
-        # Arquivo JSON com todos os resultados
-        json_file = os.path.join(output_dir, "resultados_completos.json")
-        with open(json_file, "w", encoding="utf-8") as f:
-            json.dump(results, f, ensure_ascii=False, indent=2)
-        files_created.append(json_file)
-        
-        print(f"📁 Resultados salvos em: {output_dir}")
-        for file in files_created:
-            print(f"   - {file}")
-        
-        return files_created
-
-def main():
-    """Função principal do script"""
-    
-    # Verificar se a API key foi fornecida
-    api_key = os.getenv("GOOGLE_AI_API_KEY")
-    if not api_key:
-        print("❌ Erro: Variável de ambiente GOOGLE_AI_API_KEY não encontrada!")
-        print("   Configure sua API key do Google AI Studio como variável de ambiente.")
-        sys.exit(1)
-    
-    # Verificar se o título foi fornecido como argumento
-    if len(sys.argv) < 2:
-        print("❌ Erro: Título não fornecido!")
-        print("   Uso: python ai_agents_automation.py 'Seu Título Aqui'")
-        sys.exit(1)
-    
-    title = sys.argv[1]
-    
-    try:
-        # Criar o orquestrador e executar o pipeline
-        orchestrator = AIAgentsOrchestrator(api_key)
-        results = orchestrator.run_full_pipeline(title)
-        
-        # Salvar os resultados
-        files_created = orchestrator.save_results(results)
-        
-        print("\n🎉 Pipeline executado com sucesso!")
-        print(f"📊 Resultados disponíveis em {len(files_created)} arquivos.")
-        
-    except Exception as e:
-        print(f"❌ Erro durante a execução: {e}")
-        sys.exit(1)
-
+# --- EXECUÇÃO DO SCRIPT DE AUTOMAÇÃO ---
 if __name__ == "__main__":
-    main()
+    # Pega o título do argumento passado pelo GitHub Actions
+    if len(sys.argv) > 1:
+        title = sys.argv[1]
+    else:
+        # Título padrão caso o script seja rodado sem argumentos
+        title = "A jornada da autonomia espiritual na Umbanda"
+
+    # Inicializa os agentes
+    topics_agent = TopicsAgent(model)
+    script_agent = ScriptAgent(model)
+    image_prompt_agent = ImagePromptAgent(model)
+
+    # Executa o pipeline de agentes
+    print(f"Iniciando pipeline para o título: {title}")
+    
+    topics = topics_agent.process(title)
+    print("Tópicos gerados com sucesso.")
+    
+    script = script_agent.process(topics)
+    print("Roteiro gerado com sucesso.")
+    
+    image_prompts = image_prompt_agent.process(script)
+    print("Prompt de imagem gerado com sucesso.")
+
+    # Cria o diretório de saída se ele não existir
+    output_dir = 'output'
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Salva os resultados em arquivos de texto
+    with open(os.path.join(output_dir, 'topicos.md'), 'w', encoding='utf-8') as f:
+        f.write(topics)
+    
+    with open(os.path.join(output_dir, 'roteiro.txt'), 'w', encoding='utf-8') as f:
+        f.write(script)
+        
+    with open(os.path.join(output_dir, 'prompt_imagem.txt'), 'w', encoding='utf-8') as f:
+        f.write(image_prompts)
+        
+    print(f"Resultados salvos com sucesso na pasta '{output_dir}'.")
