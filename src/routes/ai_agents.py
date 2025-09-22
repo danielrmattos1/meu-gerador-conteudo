@@ -5,7 +5,6 @@ import google.generativeai as genai
 ai_agents_bp = Blueprint('ai_agents', __name__)
 
 # --- CONFIGURAÇÃO DA API ---
-# Certifique-se de que a sua GOOGLE_AI_API_KEY está configurada no Render
 api_key = os.getenv('GOOGLE_AI_API_KEY')
 if not api_key:
     raise ValueError("API Key do Google não encontrada. Verifique as variáveis de ambiente.")
@@ -22,11 +21,22 @@ class BaseAgent:
         raise NotImplementedError("O método process() deve ser implementado pela subclasse.")
 
     def call_gemini(self, prompt):
+        # AJUSTE: Adicionamos configurações de segurança para evitar bloqueios.
+        safety_settings = [
+            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
+        ]
         try:
-            response = self.model.generate_content(prompt)
+            # Passamos as configurações de segurança na chamada da API
+            response = self.model.generate_content(prompt, safety_settings=safety_settings)
             return response.text
         except Exception as e:
             print(f"Erro ao chamar a API Gemini: {e}")
+            # Verificamos se o erro foi um bloqueio para dar uma resposta mais clara
+            if 'block_reason' in str(e):
+                return "O conteúdo foi bloqueado pelos filtros de segurança da API."
             return f"Erro ao gerar conteúdo: {e}"
 
 class TopicsAgent(BaseAgent):
@@ -88,10 +98,8 @@ class ImagePromptAgent(BaseAgent):
     "Neo-Ancestralismo Meditativo".
     """
     def process(self, script):
-        # Usamos apenas os primeiros 2500 caracteres do roteiro para economizar tokens e focar na essência
         script_snippet = script[:2500]
         
-        # AJUSTE: Modificado para gerar apenas 1 prompt de imagem
         prompt = f"""
         **MISSÃO:** Você é um especialista em engenharia de prompts para Midjourney. Sua tarefa é ler o trecho do roteiro de vídeo fornecido e criar 1 (um) único prompt visual, o mais poderoso e simbolicamente denso possível, que capture a essência da mensagem principal.
 
@@ -122,22 +130,22 @@ def process_title():
 
     title = data['title']
 
-    # Inicializa os agentes
     topics_agent = TopicsAgent(model)
     script_agent = ScriptAgent(model)
     image_prompt_agent = ImagePromptAgent(model)
 
-    # Executa o pipeline
-    print(f"Gerando tópicos para: {title}")
     topics = topics_agent.process(title)
-    
-    print("Gerando roteiro...")
-    script = script_agent.process(topics)
-    
-    print("Gerando prompts de imagem...")
-    image_prompts = image_prompt_agent.process(script)
+    if "Erro" in topics or "bloqueado" in topics:
+        return jsonify({'error': topics}), 500
 
-    # Retorna os resultados
+    script = script_agent.process(topics)
+    if "Erro" in script or "bloqueado" in script:
+        return jsonify({'error': script}), 500
+        
+    image_prompts = image_prompt_agent.process(script)
+    if "Erro" in image_prompts or "bloqueado" in image_prompts:
+        return jsonify({'error': image_prompts}), 500
+
     return jsonify({
         'topics': topics,
         'script': script,
