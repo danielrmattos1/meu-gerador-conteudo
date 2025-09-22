@@ -1,183 +1,146 @@
 import os
-import json
-import requests
 from flask import Blueprint, request, jsonify
-from flask_cors import cross_origin
+import google.generativeai as genai
 
 ai_agents_bp = Blueprint('ai_agents', __name__)
 
-class GoogleAIStudioAgent:
-    """Classe base para interagir com agentes do Google AI Studio"""
-    
-    def __init__(self, api_key: str):
-        self.api_key = api_key
-        self.base_url = "https://generativelanguage.googleapis.com/v1beta/models"
-        self.headers = {
-            "Content-Type": "application/json"
-        }
-    
-    def call_gemini(self, prompt: str, model: str = "gemini-1.5-flash") -> str:
-        """Faz uma chamada para a API do Gemini"""
-        url = f"{self.base_url}/{model}:generateContent"
-        
-        payload = {
-            "contents": [{
-                "parts": [{
-                    "text": prompt
-                }]
-            }]
-        }
-        
-        params = {"key": self.api_key}
-        
-        try:
-            response = requests.post(url, json=payload, params=params, headers=self.headers)
-            response.raise_for_status()
-            
-            result = response.json()
-            if "candidates" in result and len(result["candidates"]) > 0:
-                return result["candidates"][0]["content"]["parts"][0]["text"]
-            else:
-                raise Exception("Resposta inválida da API")
-                
-        except requests.exceptions.RequestException as e:
-            raise Exception(f"Erro na chamada da API: {e}")
+# --- CONFIGURAÇÃO DA API ---
+# Certifique-se de que a sua GOOGLE_AI_API_KEY está configurada no Render
+api_key = os.getenv('GOOGLE_AI_API_KEY')
+if not api_key:
+    raise ValueError("API Key do Google não encontrada. Verifique as variáveis de ambiente.")
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel('gemini-1.5-flash')
 
-class TopicCreatorAgent(GoogleAIStudioAgent):
-    """Agente para criar tópicos e subtópicos a partir de um título"""
-    
-    def create_topics(self, title: str) -> str:
-        """Cria tópicos e subtópicos baseados no título fornecido"""
+# --- DEFINIÇÃO DOS AGENTES ESPECIALISTAS ---
+
+class BaseAgent:
+    def __init__(self, model):
+        self.model = model
+
+    def process(self, data):
+        raise NotImplementedError("O método process() deve ser implementado pela subclasse.")
+
+    def call_gemini(self, prompt):
+        try:
+            response = self.model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            print(f"Erro ao chamar a API Gemini: {e}")
+            return f"Erro ao gerar conteúdo: {e}"
+
+class TopicsAgent(BaseAgent):
+    """
+    Agente especialista em criar tópicos profundos e filosóficos
+    baseado nas suas instruções.
+    """
+    def process(self, title):
         prompt = f"""
-        Com base no título "{title}", crie uma lista estruturada de tópicos e subtópicos para um conteúdo completo e abrangente.
-        
-        Formato de saída:
-        - Tópico Principal 1
-          - Subtópico 1.1
-          - Subtópico 1.2
-        - Tópico Principal 2
-          - Subtópico 2.1
-          - Subtópico 2.2
-        
-        Seja específico e organize os tópicos de forma lógica e sequencial.
+        **MISSÃO:** Você é um especialista na criação de tópicos transformadores para vídeos do YouTube sobre Umbanda e Espiritualidade Crítica. Sua tarefa é transformar o tema '{title}' em uma lista de tópicos e subtópicos com profundidade filosófica, ética e simbólica, oferecendo clareza prática e evitando clichês.
+
+        **ESTILO:** A linguagem deve ser acolhedora, reflexiva e potente, unindo o fundamento da Umbanda com autonomia pessoal e psicologia.
+
+        **ESTRUTURA OBRIGATÓRIA PARA CADA TEMA:**
+        - **Título do tema:** Uma frase magnetizante que mistura curiosidade, filosofia e impacto ético.
+        - **Subtópico 1:** Uma crença limitante ou um dogma a ser desmantelado.
+        - **Subtópico 2:** Um conceito pouco conhecido ou distorcido (ex: Teoria, Efeito Comportamental).
+        - **Subtópico 3:** Uma revelação contraintuitiva que transfere o poder para o médium.
+        - **Subtópico 4:** Uma consequência prática (o erro comportamental) ou a revelação de um relato real.
+        - **Subtópico 5:** Uma metáfora simbólica ou um chamado ao estudo (livros).
+
+        Gere os tópicos para o tema: '{title}'.
         """
-        
         return self.call_gemini(prompt)
 
-class ScriptWriterAgent(GoogleAIStudioAgent):
-    """Agente para criar roteiros baseados em tópicos"""
-    
-    def create_script(self, topics: str) -> str:
-        """Cria um roteiro em texto corrido baseado nos tópicos fornecidos"""
+class ScriptAgent(BaseAgent):
+    """
+    Agente especialista em criar roteiros no estilo "Professor Reflexivo"
+    baseado nas suas instruções.
+    """
+    def process(self, topics):
         prompt = f"""
-        Com base nos seguintes tópicos e subtópicos:
-        
+        **MISSÃO:** Você é um roteirista para um canal Dark de YouTube sobre Umbanda e Espiritualidade Crítica. Sua tarefa é escrever um roteiro de 15-20 minutos, em texto corrido para narração, baseado nos seguintes tópicos. O objetivo é monetizar com afiliação de livros da Amazon.
+
+        **TÓPICOS A SEREM DESENVOLVIDOS:**
         {topics}
+
+        **ESTILO E TOM OBRIGATÓRIOS:**
+        - **Tom de Professor Reflexivo:** Calmo, pausado, introspectivo e filosófico.
+        - **Linguagem:** Evite clichês e valide a dor do espectador antes de oferecer a cura.
+        - **Ênfase:** Na autonomia da consciência, não em rituais complexos.
+        - **VETO TOTAL (BLACKLIST):** Nunca use termos como "Vibe", "Vibrar Alto", "Você Consegue", "Pense Positivo". A linguagem é de Mestre Filosófico, não de Coach Motivacional.
+
+        **ESTRUTURA DO ROTEIRO:**
+        1. **Abertura Filosófica:** Comece com uma pergunta profunda que desafie um dogma.
+        2. **Desenvolvimento:** Explique os tópicos fornecidos, conectando a prática com a filosofia da autonomia. Integre sutilmente referências a estudos ou teorias.
+        3. **Conclusão e CTA de Monetização:** Encerre de forma inspiradora e use a frase exata: "Se o seu poder está na sua consciência, o seu próximo passo está na sua lista de estudos. Encontre o Livro Essencial de Umbanda e todas as referências para sua jornada na descrição."
         
-        Crie um roteiro detalhado em texto corrido. O roteiro deve:
-        - Ser fluido e natural
-        - Cobrir todos os tópicos mencionados
-        - Ter uma introdução, desenvolvimento e conclusão
-        - Ser adequado para apresentação ou narração
-        - Ter aproximadamente 500-800 palavras
-        
-        Escreva o roteiro completo:
+        **AJUSTE FINAL E RESTRIÇÃO CRÍTICA:**
+        O resultado final deve ser um texto contínuo, limpo e sem interrupções. NÃO inclua absolutamente NENHUM tipo de formatação, como asteriscos para negrito (`**texto**`), hashtags para títulos (`# Título`), marcadores (`*`, `-`), ou qualquer outra sintaxe de markdown. O texto será inserido diretamente em um software de geração de áudio (Text-to-Speech) e qualquer formatação irá atrapalhar a narração. Entregue apenas o texto puro que será narrado.
+
+        Agora, escreva o roteiro completo.
         """
-        
         return self.call_gemini(prompt)
 
-class ImagePromptAgent(GoogleAIStudioAgent):
-    """Agente para gerar prompts de imagens baseados em roteiros"""
-    
-    def create_image_prompts(self, script: str) -> str:
-        """Cria prompts para geração de imagens baseados no roteiro"""
+class ImagePromptAgent(BaseAgent):
+    """
+    Agente especialista em criar prompts para Midjourney no estilo
+    "Neo-Ancestralismo Meditativo".
+    """
+    def process(self, script):
+        # Usamos apenas os primeiros 2500 caracteres do roteiro para economizar tokens e focar na essência
+        script_snippet = script[:2500]
+        
         prompt = f"""
-        Com base no seguinte roteiro:
-        
-        {script}
-        
-        Crie uma série de prompts detalhados para geração de imagens que complementem o conteúdo. 
-        
-        Para cada prompt, inclua:
-        - Descrição visual específica
-        - Estilo artístico sugerido
-        - Elementos visuais importantes
-        - Atmosfera/mood desejado
-        
-        Formato de saída:
-        PROMPT 1: [descrição detalhada]
-        PROMPT 2: [descrição detalhada]
-        PROMPT 3: [descrição detalhada]
-        
-        Crie entre 3-5 prompts que capturem os momentos ou conceitos mais importantes do roteiro.
+        **MISSÃO:** Você é um especialista em engenharia de prompts para Midjourney. Sua tarefa é ler o trecho do roteiro de vídeo fornecido e criar 5 prompts visuais impactantes que capturem a essência de suas mensagens.
+
+        **TRECHO DO ROTEIRO PARA ANÁLISE:**
+        {script_snippet}
+
+        **ESTILO VISUAL OBRIGATÓRIO: Neo-Ancestralismo Meditativo**
+        - **Estética:** Pintura a óleo escura e dramática, textura de gravura, arte digital com textura de tela (Painterly).
+        - **Temas:** Foco em metáforas visuais da autonomia e quebra de dogmas (ex: rochas rachadas com ouro kintsugi, chaves antigas, livros abertos na escuridão, raízes como nervos).
+        - **Cores:** Fundos escuros (Preto Carvão, Azul-Marinho) com destaques em Ouro Velho, Cobre ou luz branca pura. Alto contraste.
+        - **Composição:** Variada. Use close-ups, top view, silhuetas contemplativas em contraluz.
+        - **Animação Sutil:** Inclua elementos com movimento lento, como "fumaça de incenso subindo lentamente" ou "chama da vela tremulando suavemente".
+
+        **REGRAS:**
+        - Não use silhuetas humanas em todas as imagens. Alterne com objetos simbólicos.
+        - Varie a composição e os elementos centrais.
+        - Os prompts devem ser em inglês, detalhados e prontos para o Midjourney, no formato:
+        `/imagine prompt: [descrição detalhada], [estilo], [parâmetros como --ar 16:9]`
+
+        Crie 5 prompts distintos baseados no roteiro.
         """
-        
         return self.call_gemini(prompt)
 
+# --- ROTA DA API ---
 @ai_agents_bp.route('/process', methods=['POST'])
-@cross_origin()
 def process_title():
-    """Endpoint principal que processa um título através dos três agentes"""
+    data = request.get_json()
+    if not data or 'title' not in data:
+        return jsonify({'error': 'Título não fornecido'}), 400
+
+    title = data['title']
+
+    # Inicializa os agentes
+    topics_agent = TopicsAgent(model)
+    script_agent = ScriptAgent(model)
+    image_prompt_agent = ImagePromptAgent(model)
+
+    # Executa o pipeline
+    print(f"Gerando tópicos para: {title}")
+    topics = topics_agent.process(title)
     
-    try:
-        # Obter dados da requisição
-        data = request.get_json()
-        if not data or 'title' not in data:
-            return jsonify({'error': 'Título é obrigatório'}), 400
-        
-        title = data['title'].strip()
-        if not title:
-            return jsonify({'error': 'Título não pode estar vazio'}), 400
-        
-        # Verificar se a API key está configurada
-        api_key = os.getenv('GOOGLE_AI_API_KEY')
-        if not api_key:
-            return jsonify({'error': 'API key do Google AI não configurada'}), 500
-        
-        # Criar instâncias dos agentes
-        topic_agent = TopicCreatorAgent(api_key)
-        script_agent = ScriptWriterAgent(api_key)
-        image_agent = ImagePromptAgent(api_key)
-        
-        # Executar pipeline
-        result = {'title': title}
-        
-        # Etapa 1: Criar tópicos
-        try:
-            topics = topic_agent.create_topics(title)
-            result['topics'] = topics
-        except Exception as e:
-            return jsonify({'error': f'Erro ao criar tópicos: {str(e)}'}), 500
-        
-        # Etapa 2: Criar roteiro
-        try:
-            script = script_agent.create_script(topics)
-            result['script'] = script
-        except Exception as e:
-            return jsonify({'error': f'Erro ao criar roteiro: {str(e)}'}), 500
-        
-        # Etapa 3: Criar prompts de imagem
-        try:
-            image_prompts = image_agent.create_image_prompts(script)
-            result['image_prompts'] = image_prompts
-        except Exception as e:
-            return jsonify({'error': f'Erro ao criar prompts de imagem: {str(e)}'}), 500
-        
-        return jsonify({
-            'success': True,
-            'data': result
-        })
-        
-    except Exception as e:
-        return jsonify({'error': f'Erro interno: {str(e)}'}), 500
+    print("Gerando roteiro...")
+    script = script_agent.process(topics)
+    
+    print("Gerando prompts de imagem...")
+    image_prompts = image_prompt_agent.process(script)
 
-@ai_agents_bp.route('/health', methods=['GET'])
-@cross_origin()
-def health_check():
-    """Endpoint para verificar se o serviço está funcionando"""
-    api_key = os.getenv('GOOGLE_AI_API_KEY')
+    # Retorna os resultados
     return jsonify({
-        'status': 'ok',
-        'api_configured': bool(api_key)
+        'topics': topics,
+        'script': script,
+        'image_prompts': image_prompts
     })
-
