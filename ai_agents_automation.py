@@ -3,10 +3,8 @@ import sys
 import google.generativeai as genai
 
 # --- CONFIGURAÇÃO DA API ---
-# A automação do GitHub irá fornecer a chave de API como uma variável de ambiente.
 api_key = os.getenv('GOOGLE_AI_API_KEY')
 if not api_key:
-    # Este erro irá parar a execução do GitHub Actions se o 'secret' não for encontrado.
     sys.exit("ERRO: API Key do Google não encontrada. Configure o secret GOOGLE_AI_API_KEY.")
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
@@ -21,12 +19,22 @@ class BaseAgent:
         raise NotImplementedError("O método process() deve ser implementado pela subclasse.")
 
     def call_gemini(self, prompt):
+        # AJUSTE: Adicionamos configurações de segurança para evitar bloqueios.
+        safety_settings = [
+            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
+        ]
         try:
-            response = self.model.generate_content(prompt)
+            # Passamos as configurações de segurança na chamada da API
+            response = self.model.generate_content(prompt, safety_settings=safety_settings)
             return response.text
         except Exception as e:
             print(f"Erro ao chamar a API Gemini: {e}")
-            # Retorna o erro para que ele apareça nos logs do GitHub Actions
+            # Verificamos se o erro foi um bloqueio para dar uma resposta mais clara
+            if 'block_reason' in str(e):
+                return "O conteúdo foi bloqueado pelos filtros de segurança da API."
             return f"Erro ao gerar conteúdo: {e}"
 
 class TopicsAgent(BaseAgent):
@@ -88,7 +96,6 @@ class ImagePromptAgent(BaseAgent):
     "Neo-Ancestralismo Meditativo".
     """
     def process(self, script):
-        # Usamos apenas os primeiros 2500 caracteres do roteiro para economizar tokens e focar na essência
         script_snippet = script[:2500]
         
         prompt = f"""
@@ -114,35 +121,38 @@ class ImagePromptAgent(BaseAgent):
 
 # --- EXECUÇÃO DO SCRIPT DE AUTOMAÇÃO ---
 if __name__ == "__main__":
-    # Pega o título do argumento passado pelo GitHub Actions
     if len(sys.argv) > 1:
         title = sys.argv[1]
     else:
-        # Título padrão caso o script seja rodado sem argumentos
         title = "A jornada da autonomia espiritual na Umbanda"
 
-    # Inicializa os agentes
     topics_agent = TopicsAgent(model)
     script_agent = ScriptAgent(model)
     image_prompt_agent = ImagePromptAgent(model)
 
-    # Executa o pipeline de agentes
     print(f"Iniciando pipeline para o título: {title}")
     
     topics = topics_agent.process(title)
+    if "Erro" in topics or "bloqueado" in topics:
+        print(f"Pipeline interrompido no agente de tópicos: {topics}")
+        sys.exit(1) # Para a execução com um código de erro
     print("Tópicos gerados com sucesso.")
     
     script = script_agent.process(topics)
+    if "Erro" in script or "bloqueado" in script:
+        print(f"Pipeline interrompido no agente de roteiros: {script}")
+        sys.exit(1)
     print("Roteiro gerado com sucesso.")
     
     image_prompts = image_prompt_agent.process(script)
+    if "Erro" in image_prompts or "bloqueado" in image_prompts:
+        print(f"Pipeline interrompido no agente de prompts de imagem: {image_prompts}")
+        sys.exit(1)
     print("Prompt de imagem gerado com sucesso.")
 
-    # Cria o diretório de saída se ele não existir
     output_dir = 'output'
     os.makedirs(output_dir, exist_ok=True)
 
-    # Salva os resultados em arquivos de texto
     with open(os.path.join(output_dir, 'topicos.md'), 'w', encoding='utf-8') as f:
         f.write(topics)
     
